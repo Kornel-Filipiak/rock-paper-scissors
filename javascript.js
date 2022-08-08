@@ -1,5 +1,6 @@
 function getPlayerChoice(){
-    return (prompt("Rock, paper, or scissors? ")).toLowerCase();
+
+
 }
 
 function getComputerChoice(arsenal){
@@ -26,37 +27,65 @@ function playRound(playerSelection, computerSelection){
 }
 
 
-function game(){
 
-    const arsenal = ['rock', 'paper', 'scissors'];
-    let computerScore = 0;
-    let playerScore = 0;
 
-    //play fives rounds and keep score
-    for(let i = 0; i < 5; i++){
-        const result = playRound(getPlayerChoice(), getComputerChoice(arsenal));
+
+const arsenal = ['rock', 'paper', 'scissors'];
+let computerScore = 0;
+let playerScore = 0;
+let roundCount = 0;
+const buttons = document.querySelectorAll('button');
+const results = document.querySelector('.results');
+
+
+buttons.forEach((button) => {   
+    
+    button.addEventListener('click', () => {
+            
+        //play a round and determine result
+        console.log(button.id);
+        const result = playRound(button.id, getComputerChoice(arsenal));
+            
+        //keep track of the result
         if(result === 'win'){
-            playerScore++;
-        }
+             playerScore++;
+            }
         else if(result === 'lose'){
             computerScore++;
+            }
+
+        //Display round scores
+        results.textContent=`Round ${++roundCount} \r\n\n Player: ${playerScore} \r\n Computer: ${computerScore}`;
+
+
+        //determine winner of game and reset the game
+        
+        if(playerScore === 5 || computerScore === 5){
+
+            if(playerScore > computerScore){
+                results.textContent=`You Win! \r\n\n Final Score: \r\n Player ${playerScore} \r\n Computer ${computerScore}`;
+                }
+            else if (playerScore < computerScore){
+                results.textContent=`You Lose :( \r\n\n Final Score: \r\n Player ${playerScore} \r\n Computer ${computerScore}`;
+                }
+            else{
+                results.textContent=`Tie Game. \r\n\n Final Score: \r\n Player ${playerScore} \r\n Computer ${computerScore}`;
+                }
+            playerScore = computerScore = roundCount =0; //reset round counter and scores
         }
 
-        console.log(`Round ${i+1} - Player: ${playerScore} Computer: ${computerScore}`); //show round score
-    }
+        });
+});
 
-    //determine winner of game
-    if(playerScore > computerScore){
-        console.log(`You Win! \nFinal Score - Player: ${playerScore} Computer: ${computerScore}`);
-    }
-    else if (playerScore < computerScore){
-        console.log(`You Lose :( \nFinal Score - Player: ${playerScore} Computer: ${computerScore}`);
-    }
-    else{
-        console.log(`Tie Game. \nFinal Score - Player: ${playerScore} Computer: ${computerScore}`);
-    }
 
-}
 
-//play game
-game();
+
+
+
+
+
+    
+
+
+
+
